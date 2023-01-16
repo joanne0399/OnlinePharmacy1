@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace OnlinePharmacy1.Shared.Domain
 {
-    public class Consultation
+    public class Order
     {
-        public int ConsultationID { get; set; }
-        public DateTime ConsultationDateTime { get; set; }
-        public string Diagnosis { get; set; }
-        public int StaffID { get; set; }
-        public virtual Staff Staff { get; set; }
+        public int OrderID { get; set; }
+        public DateTime OrderDateTime { get; set; }
         public int CustomerID { get; set; }
         public virtual Customer Customer { get; set; }
+        public int StaffID { get; set; }
+        public virtual Staff Staff { get; set; }
     }
 }
