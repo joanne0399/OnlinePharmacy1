@@ -36,7 +36,7 @@ namespace OnlinePharmacy1.Server.Controllers
         {
             //Refactored
             //return await _context.Makes.ToListAsync();
-            var orderitems = await _unitOfWork.OrderItems.GetAll();
+            var orderitems = await _unitOfWork.OrderItems.GetAll(includes: q => q.Include(x => x.Order).Include(x => x.Medication));
             return Ok(orderitems);
         }
 

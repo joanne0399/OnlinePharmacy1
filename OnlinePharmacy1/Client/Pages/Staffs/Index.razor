@@ -1,0 +1,72 @@
+﻿@page "/staffs/"
+@inject HttpClient _client
+@inject IJSRuntime js
+@attribute [Authorize]
+
+<h3 class="card-title">Staffs</h3>
+<br />
+
+@if (Staffs == null)
+{
+    <div class="alert alert-info">Loading Staffs...</div>
+}
+
+else
+{
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Contact Number</th>
+                <th>Address</th>
+                <th>NRIC</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var staff in Staffs)
+            {
+            <tr>
+                <td>@staff.StaffName</td>
+                <td>@staff.StaffContactNo</td>
+                <td>@staff.StaffAddress</td>
+                <td>@staff.StaffNRIC</td>
+                <td>@staff.StaffEmail</td>
+                <td>
+                    <a href="/staffs/view/@staff.StaffID" class="btn btn-primary">
+                        <span class="oi oi-book"></span>
+                    </a>
+                    <a href="/staffs/edit/@staff.StaffID" class="btn btn-warning">
+                        <span class="oi oi-pencil"></span>
+                    </a>
+                    <button class="btn btn-danger" @onclick="@(() => Delete(staff.StaffID))">
+                        <span class="oi oi-delete"></span>
+                    </button>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Staff> Staffs;
+
+    protected async override Task OnInitializedAsync()
+    {
+
+        Staffs = await _client.GetFromJsonAsync<List<Staff>>($"{Endpoints.StaffsEndpoint}");
+
+    }
+    async Task Delete(int staffId)
+    {
+        var staff = Staffs.First(q => q.StaffID == staffId);
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {staff.StaffID}?");
+        if (confirm)
+        {
+            await _client.DeleteAsync($"{Endpoints.StaffsEndpoint}/{staffId}");
+            await OnInitializedAsync();
+        }
+    }
+}

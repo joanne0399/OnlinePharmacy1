@@ -1,0 +1,72 @@
+﻿@page "/medications/"
+@inject HttpClient _client
+@inject IJSRuntime js
+@attribute [Authorize]
+
+<h3 class="card-title">Medications</h3>
+<br />
+
+@if (Medications == null)
+{
+    <div class="alert alert-info">Loading Medications...</div>
+}
+
+else
+{
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Ingredients</th>
+                <th>RecommendedDosage</th>
+                <th>Availability</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var medication in Medications)
+            {
+                <tr>
+                    <td>@medication.MedicationName</td>
+                    <td>@medication.Description</td>
+                    <td>@medication.Ingredients</td>
+                    <td>@medication.RecommendedDosage</td>
+                    <td>@medication.Availability</td>
+                    <td>
+                        <a href="/medications/view/@medication.MedicationID" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                        <a href="/medications/edit/@medication.MedicationID" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                        <button class="btn btn-danger" @onclick="@(() => Delete(medication.MedicationID))">
+                            <span class="oi oi-delete"></span>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Medication> Medications;
+
+    protected async override Task OnInitializedAsync()
+    {
+
+        Medications = await _client.GetFromJsonAsync<List<Medication>>($"{Endpoints.MedicationsEndpoint}");
+
+    }
+    async Task Delete(int medicationId)
+    {
+        var medication = Medications.First(q => q.MedicationID == medicationId);
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {medication.MedicationID}?");
+        if (confirm)
+        {
+            await _client.DeleteAsync($"{Endpoints.MedicationsEndpoint}/{medicationId}");
+            await OnInitializedAsync();
+        }
+    }
+}
