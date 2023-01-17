@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlinePharmacy1.Server.Data;
+using OnlinePharmacy1.Server.IRepository;
 using OnlinePharmacy1.Shared.Domain;
 
 namespace OnlinePharmacy1.Server.Controllers
@@ -14,32 +15,47 @@ namespace OnlinePharmacy1.Server.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        //Refactored
+        //private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CustomersController(ApplicationDbContext context)
+        //Refactored
+        //public MakesController(ApplicationDbContext context)
+        public CustomersController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            //Refactored
+            //_context = context;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/Customers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
+        //Refactored
+        //public async Task<ActionResult<IEnumerable<Make>>> GetCustomers()
+        public async Task<IActionResult> GetCustomer()
         {
-            return await _context.Customers.ToListAsync();
+            //Refactored
+            //return await _context.Makes.ToListAsync();
+            var customers = await _unitOfWork.Customers.GetAll();
+            return Ok(customers);
         }
 
         // GET: api/Customers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Customer>> GetCustomer(int id)
+        //Refactored
+        //public async Task<ActionResult<Make>> GetMake(int id)
+        public async Task<IActionResult> GetCustomer(int id)
         {
-            var customer = await _context.Customers.FindAsync(id);
+            //Refactored
+            //var make = await _context.Makes.FindAsync(id);
+            var customer = await _unitOfWork.Customers.Get(q => q.CustomerID == id);
 
             if (customer == null)
             {
                 return NotFound();
             }
 
-            return customer;
+            return Ok(customer);
         }
 
         // PUT: api/Customers/5
@@ -52,15 +68,21 @@ namespace OnlinePharmacy1.Server.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(customer).State = EntityState.Modified;
+            //Refactored
+            //_context.Entry(make).State = EntityState.Modified;
+            _unitOfWork.Customers.Update(customer);
 
             try
             {
-                await _context.SaveChangesAsync();
+                //Refactored
+                //await _context.SaveChangesAsync();
+                await _unitOfWork.Save(HttpContext);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CustomerExists(id))
+                //Refactored
+                //if (!MakeExists(id))
+                if (!await CustomerExists(id))
                 {
                     return NotFound();
                 }
@@ -78,8 +100,11 @@ namespace OnlinePharmacy1.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
         {
-            _context.Customers.Add(customer);
-            await _context.SaveChangesAsync();
+            //Refactored
+            //_context.Makes.Add(make);
+            //await _context.SaveChangesAsync();
+            await _unitOfWork.Customers.Insert(customer);
+            await _unitOfWork.Save(HttpContext);
 
             return CreatedAtAction("GetCustomer", new { id = customer.CustomerID }, customer);
         }
@@ -88,21 +113,32 @@ namespace OnlinePharmacy1.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCustomer(int id)
         {
-            var customer = await _context.Customers.FindAsync(id);
+            //Refactored
+            //var make = await _context.Makes.FindAsync(id);
+            var customer = await _unitOfWork.Customers.Get(q => q.CustomerID == id);
+
             if (customer == null)
             {
                 return NotFound();
             }
 
-            _context.Customers.Remove(customer);
-            await _context.SaveChangesAsync();
+            //Refactored
+            //_context.Makes.Remove(make);
+            //await _context.SaveChangesAsync();
+            await _unitOfWork.Customers.Delete(id);
+            await _unitOfWork.Save(HttpContext);
 
             return NoContent();
         }
 
-        private bool CustomerExists(int id)
+        //Refactored
+        //private bool MakeExists(int id)
+        private async Task<bool> CustomerExists(int id)
         {
-            return _context.Customers.Any(e => e.CustomerID == id);
+            //Refactored
+            //return _context.Makes.Any(e => e.Id == id);       
+            var customer = await _unitOfWork.Customers.Get(q => q.CustomerID == id);
+            return customer != null;
         }
     }
 }
