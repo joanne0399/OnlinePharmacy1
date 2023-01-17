@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlinePharmacy1.Server.Data;
+using OnlinePharmacy1.Server.IRepository;
 using OnlinePharmacy1.Shared.Domain;
 
 namespace OnlinePharmacy1.Server.Controllers
@@ -14,32 +15,47 @@ namespace OnlinePharmacy1.Server.Controllers
     [ApiController]
     public class ConsultationsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        //Refactored
+        //private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ConsultationsController(ApplicationDbContext context)
+        //Refactored
+        //public MakesController(ApplicationDbContext context)
+        public ConsultationsController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            //Refactored
+            //_context = context;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/Consultations
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Consultation>>> GetConsultations()
+        //Refactored
+        //public async Task<ActionResult<IEnumerable<Make>>> GetConsultations()
+        public async Task<IActionResult> GetConsultation()
         {
-            return await _context.Consultations.ToListAsync();
+            //Refactored
+            //return await _context.Makes.ToListAsync();
+            var consultations = await _unitOfWork.Consultations.GetAll();
+            return Ok(consultations);
         }
 
         // GET: api/Consultations/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Consultation>> GetConsultation(int id)
+        //Refactored
+        //public async Task<ActionResult<Make>> GetMake(int id)
+        public async Task<IActionResult> GetConsultation(int id)
         {
-            var consultation = await _context.Consultations.FindAsync(id);
+            //Refactored
+            //var make = await _context.Makes.FindAsync(id);
+            var consultation = await _unitOfWork.Consultations.Get(q => q.ConsultationID == id);
 
             if (consultation == null)
             {
                 return NotFound();
             }
 
-            return consultation;
+            return Ok(consultation);
         }
 
         // PUT: api/Consultations/5
@@ -52,15 +68,21 @@ namespace OnlinePharmacy1.Server.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(consultation).State = EntityState.Modified;
+            //Refactored
+            //_context.Entry(make).State = EntityState.Modified;
+            _unitOfWork.Consultations.Update(consultation);
 
             try
             {
-                await _context.SaveChangesAsync();
+                //Refactored
+                //await _context.SaveChangesAsync();
+                await _unitOfWork.Save(HttpContext);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ConsultationExists(id))
+                //Refactored
+                //if (!MakeExists(id))
+                if (!await ConsultationExists(id))
                 {
                     return NotFound();
                 }
@@ -78,8 +100,11 @@ namespace OnlinePharmacy1.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Consultation>> PostConsultation(Consultation consultation)
         {
-            _context.Consultations.Add(consultation);
-            await _context.SaveChangesAsync();
+            //Refactored
+            //_context.Makes.Add(make);
+            //await _context.SaveChangesAsync();
+            await _unitOfWork.Consultations.Insert(consultation);
+            await _unitOfWork.Save(HttpContext);
 
             return CreatedAtAction("GetConsultation", new { id = consultation.ConsultationID }, consultation);
         }
@@ -88,21 +113,32 @@ namespace OnlinePharmacy1.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteConsultation(int id)
         {
-            var consultation = await _context.Consultations.FindAsync(id);
+            //Refactored
+            //var make = await _context.Makes.FindAsync(id);
+            var consultation = await _unitOfWork.Consultations.Get(q => q.ConsultationID == id);
+
             if (consultation == null)
             {
                 return NotFound();
             }
 
-            _context.Consultations.Remove(consultation);
-            await _context.SaveChangesAsync();
+            //Refactored
+            //_context.Makes.Remove(make);
+            //await _context.SaveChangesAsync();
+            await _unitOfWork.Consultations.Delete(id);
+            await _unitOfWork.Save(HttpContext);
 
             return NoContent();
         }
 
-        private bool ConsultationExists(int id)
+        //Refactored
+        //private bool MakeExists(int id)
+        private async Task<bool> ConsultationExists(int id)
         {
-            return _context.Consultations.Any(e => e.ConsultationID == id);
+            //Refactored
+            //return _context.Makes.Any(e => e.Id == id);       
+            var consultation = await _unitOfWork.Consultations.Get(q => q.ConsultationID == id);
+            return consultation != null;
         }
     }
 }
