@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlinePharmacy1.Server.Data;
+using OnlinePharmacy1.Server.IRepository;
 using OnlinePharmacy1.Shared.Domain;
 
 namespace OnlinePharmacy1.Server.Controllers
@@ -14,53 +15,74 @@ namespace OnlinePharmacy1.Server.Controllers
     [ApiController]
     public class OrderItemsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        //Refactored
+        //private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public OrderItemsController(ApplicationDbContext context)
+        //Refactored
+        //public MakesController(ApplicationDbContext context)
+        public OrderItemsController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            //Refactored
+            //_context = context;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/OrderItems
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrderItem>>> GetOrderItems()
+        //Refactored
+        //public async Task<ActionResult<IEnumerable<Make>>> GetOrderItems()
+        public async Task<IActionResult> GetOrderItem()
         {
-            return await _context.OrderItems.ToListAsync();
+            //Refactored
+            //return await _context.Makes.ToListAsync();
+            var orderitems = await _unitOfWork.OrderItems.GetAll();
+            return Ok(orderitems);
         }
 
         // GET: api/OrderItems/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<OrderItem>> GetOrderItem(int id)
+        //Refactored
+        //public async Task<ActionResult<Make>> GetMake(int id)
+        public async Task<IActionResult> GetOrderItem(int id)
         {
-            var orderItem = await _context.OrderItems.FindAsync(id);
+            //Refactored
+            //var make = await _context.Makes.FindAsync(id);
+            var orderitem = await _unitOfWork.OrderItems.Get(q => q.OrderItemID == id);
 
-            if (orderItem == null)
+            if (orderitem == null)
             {
                 return NotFound();
             }
 
-            return orderItem;
+            return Ok(orderitem);
         }
 
         // PUT: api/OrderItems/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOrderItem(int id, OrderItem orderItem)
+        public async Task<IActionResult> PutOrderItem(int id, OrderItem orderitem)
         {
-            if (id != orderItem.OrderItemID)
+            if (id != orderitem.OrderItemID)
             {
                 return BadRequest();
             }
 
-            _context.Entry(orderItem).State = EntityState.Modified;
+            //Refactored
+            //_context.Entry(make).State = EntityState.Modified;
+            _unitOfWork.OrderItems.Update(orderitem);
 
             try
             {
-                await _context.SaveChangesAsync();
+                //Refactored
+                //await _context.SaveChangesAsync();
+                await _unitOfWork.Save(HttpContext);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!OrderItemExists(id))
+                //Refactored
+                //if (!MakeExists(id))
+                if (!await OrderItemExists(id))
                 {
                     return NotFound();
                 }
@@ -76,33 +98,47 @@ namespace OnlinePharmacy1.Server.Controllers
         // POST: api/OrderItems
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<OrderItem>> PostOrderItem(OrderItem orderItem)
+        public async Task<ActionResult<OrderItem>> PostOrderItem(OrderItem orderitem)
         {
-            _context.OrderItems.Add(orderItem);
-            await _context.SaveChangesAsync();
+            //Refactored
+            //_context.Makes.Add(make);
+            //await _context.SaveChangesAsync();
+            await _unitOfWork.OrderItems.Insert(orderitem);
+            await _unitOfWork.Save(HttpContext);
 
-            return CreatedAtAction("GetOrderItem", new { id = orderItem.OrderItemID }, orderItem);
+            return CreatedAtAction("GetOrderItem", new { id = orderitem.OrderItemID }, orderitem);
         }
 
         // DELETE: api/OrderItems/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrderItem(int id)
         {
-            var orderItem = await _context.OrderItems.FindAsync(id);
-            if (orderItem == null)
+            //Refactored
+            //var make = await _context.Makes.FindAsync(id);
+            var orderitem = await _unitOfWork.OrderItems.Get(q => q.OrderItemID == id);
+
+            if (orderitem == null)
             {
                 return NotFound();
             }
 
-            _context.OrderItems.Remove(orderItem);
-            await _context.SaveChangesAsync();
+            //Refactored
+            //_context.Makes.Remove(make);
+            //await _context.SaveChangesAsync();
+            await _unitOfWork.OrderItems.Delete(id);
+            await _unitOfWork.Save(HttpContext);
 
             return NoContent();
         }
 
-        private bool OrderItemExists(int id)
+        //Refactored
+        //private bool MakeExists(int id)
+        private async Task<bool> OrderItemExists(int id)
         {
-            return _context.OrderItems.Any(e => e.OrderItemID == id);
+            //Refactored
+            //return _context.Makes.Any(e => e.Id == id);       
+            var orderitem = await _unitOfWork.OrderItems.Get(q => q.OrderItemID == id);
+            return orderitem != null;
         }
     }
 }

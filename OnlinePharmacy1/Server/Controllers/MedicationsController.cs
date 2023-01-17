@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlinePharmacy1.Server.Data;
+using OnlinePharmacy1.Server.IRepository;
 using OnlinePharmacy1.Shared.Domain;
 
 namespace OnlinePharmacy1.Server.Controllers
@@ -14,32 +15,47 @@ namespace OnlinePharmacy1.Server.Controllers
     [ApiController]
     public class MedicationsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        //Refactored
+        //private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public MedicationsController(ApplicationDbContext context)
+        //Refactored
+        //public MakesController(ApplicationDbContext context)
+        public MedicationsController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            //Refactored
+            //_context = context;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/Medications
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Medication>>> GetMedications()
+        //Refactored
+        //public async Task<ActionResult<IEnumerable<Make>>> GetMedications()
+        public async Task<IActionResult> GetMedication()
         {
-            return await _context.Medications.ToListAsync();
+            //Refactored
+            //return await _context.Makes.ToListAsync();
+            var medications = await _unitOfWork.Medications.GetAll();
+            return Ok(medications);
         }
 
         // GET: api/Medications/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Medication>> GetMedication(int id)
+        //Refactored
+        //public async Task<ActionResult<Make>> GetMake(int id)
+        public async Task<IActionResult> GetMedication(int id)
         {
-            var medication = await _context.Medications.FindAsync(id);
+            //Refactored
+            //var make = await _context.Makes.FindAsync(id);
+            var medication = await _unitOfWork.Medications.Get(q => q.MedicationID == id);
 
             if (medication == null)
             {
                 return NotFound();
             }
 
-            return medication;
+            return Ok(medication);
         }
 
         // PUT: api/Medications/5
@@ -52,15 +68,21 @@ namespace OnlinePharmacy1.Server.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(medication).State = EntityState.Modified;
+            //Refactored
+            //_context.Entry(make).State = EntityState.Modified;
+            _unitOfWork.Medications.Update(medication);
 
             try
             {
-                await _context.SaveChangesAsync();
+                //Refactored
+                //await _context.SaveChangesAsync();
+                await _unitOfWork.Save(HttpContext);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MedicationExists(id))
+                //Refactored
+                //if (!MakeExists(id))
+                if (!await MedicationExists(id))
                 {
                     return NotFound();
                 }
@@ -78,8 +100,11 @@ namespace OnlinePharmacy1.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Medication>> PostMedication(Medication medication)
         {
-            _context.Medications.Add(medication);
-            await _context.SaveChangesAsync();
+            //Refactored
+            //_context.Makes.Add(make);
+            //await _context.SaveChangesAsync();
+            await _unitOfWork.Medications.Insert(medication);
+            await _unitOfWork.Save(HttpContext);
 
             return CreatedAtAction("GetMedication", new { id = medication.MedicationID }, medication);
         }
@@ -88,21 +113,32 @@ namespace OnlinePharmacy1.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMedication(int id)
         {
-            var medication = await _context.Medications.FindAsync(id);
+            //Refactored
+            //var make = await _context.Makes.FindAsync(id);
+            var medication = await _unitOfWork.Medications.Get(q => q.MedicationID == id);
+
             if (medication == null)
             {
                 return NotFound();
             }
 
-            _context.Medications.Remove(medication);
-            await _context.SaveChangesAsync();
+            //Refactored
+            //_context.Makes.Remove(make);
+            //await _context.SaveChangesAsync();
+            await _unitOfWork.Medications.Delete(id);
+            await _unitOfWork.Save(HttpContext);
 
             return NoContent();
         }
 
-        private bool MedicationExists(int id)
+        //Refactored
+        //private bool MakeExists(int id)
+        private async Task<bool> MedicationExists(int id)
         {
-            return _context.Medications.Any(e => e.MedicationID == id);
+            //Refactored
+            //return _context.Makes.Any(e => e.Id == id);       
+            var medication = await _unitOfWork.Medications.Get(q => q.MedicationID == id);
+            return medication != null;
         }
     }
 }
