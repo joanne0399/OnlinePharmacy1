@@ -16,27 +16,33 @@ else
     <table class="table table-responsive">
         <thead>
             <tr>
+                <th>Patients</th>
+                <th>Date & Time</th>
                 <th>Diagnosis</th>
+                <th>Consulted by</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var consultation in Consultations)
             {
-                <tr>
-                    <td>@consultation.Diagnosis</td>
-                    <td>
-                        <a href="/consultations/view/@consultation.ConsultationID" class="btn btn-primary">
-                            <span class="oi oi-book"></span>
-                        </a>
-                        <a href="/consultations/edit/@consultation.ConsultationID"class="btn btn-warning">
-                            <span class="oi oi-pencil"></span>
-                        </a>
-                        <button class="btn btn-danger" @onclick="@(() => Delete(consultation.ConsultationID))">
-                            <span class="oi oi-delete"></span>
-                        </button>
-                    </td>
-                </tr>
+            <tr>
+                <td>@consultation.Customer.CustomerName</td>
+                <td>@consultation.ConsultationDateTime</td>
+                <td>@consultation.Diagnosis</td>
+                <td>@consultation.Staff.StaffName</td>
+                <td>
+                    <a href="/consultations/view/@consultation.ConsultationID" class="btn btn-primary">
+                        <span class="oi oi-book"></span>
+                    </a>
+                    <a href="/consultations/edit/@consultation.ConsultationID" class="btn btn-warning">
+                        <span class="oi oi-pencil"></span>
+                    </a>
+                    <button class="btn btn-danger" @onclick="@(() => Delete(consultation.ConsultationID))">
+                        <span class="oi oi-delete"></span>
+                    </button>
+                </td>
+            </tr>
             }
         </tbody>
     </table>
@@ -61,4 +67,4 @@ private List<Consultation> Consultations;
             await OnInitializedAsync();
         }
     }
-    }
+}
