@@ -4,71 +4,77 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <div class="form-group">
-        <label>Patient: </label>
-        <div>
-            <InputSelect @bind-Value="consultation.CustomerID" class="form-control">
-                <option value="">-- Select Customer -- </option>
-                @if (Customers != null)
-                {
-                    foreach (var customer in Customers)
+    <fieldset disabled="@Disabled">
+        <div class="form-group">
+            <label>Patient: </label>
+            <div>
+                <InputSelect @bind-Value="consultation.CustomerID" class="form-control">
+                    <option value="">-- Select Customer -- </option>
+                    @if (Customers != null)
                     {
-                        <option value="@customer.CustomerID">@customer.CustomerName</option>
+                        foreach (var customer in Customers)
+                        {
+                            <option value="@customer.CustomerID">@customer.CustomerName</option>
+                        }
                     }
-                }
-            </InputSelect>
-            <ValidationMessage For="@(() =>consultation.CustomerID)" />
+                </InputSelect>
+                <ValidationMessage For="@(() =>consultation.CustomerID)" />
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label>Consultation date/time:</label>
-        <div>
-            <InputDate @bind-Value="@consultation.ConsultationDateTime" class="form-control" />
-            <ValidationMessage For="@(() => consultation.ConsultationDateTime)" />
+        <div class="form-group">
+            <label>Consultation date/time:</label>
+            <div>
+                <InputDate @bind-Value="@consultation.ConsultationDateTime" class="form-control" />
+                <ValidationMessage For="@(() => consultation.ConsultationDateTime)" />
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label>Diagnosis:</label>
-        <div>
-            <InputText @bind-Value="@consultation.Diagnosis" class="form-control" />
-            <ValidationMessage For="@(() => consultation.Diagnosis)" />
+        <div class="form-group">
+            <label>Diagnosis:</label>
+            <div>
+                <InputText @bind-Value="@consultation.Diagnosis" class="form-control" />
+                <ValidationMessage For="@(() => consultation.Diagnosis)" />
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label>Consulted by: </label>
-        <div>
-            <InputSelect @bind-Value="consultation.StaffID" class="form-control">
-                <option value="">-- Select Staff -- </option>
-                @if (Staffs != null)
-                {
-                    foreach (var staff in Staffs)
+        <div class="form-group">
+            <label>Consulted by: </label>
+            <div>
+                <InputSelect @bind-Value="consultation.StaffID" class="form-control">
+                    <option value="">-- Select Staff -- </option>
+                    @if (Staffs != null)
                     {
-                        <option value="@staff.StaffID">@staff.StaffName</option>
+                        foreach (var staff in Staffs)
+                        {
+                            <option value="@staff.StaffID">@staff.StaffName</option>
+                        }
                     }
-                }
-            </InputSelect>
-            <ValidationMessage For="@(() =>consultation.StaffID)" />
+                </InputSelect>
+                <ValidationMessage For="@(() =>consultation.StaffID)" />
+            </div>
         </div>
-    </div>
+    </fieldset>
 
-    <button type="submit" class="btn btn-success btn-block">
-        @ButtonText
-    </button>
+        @if (!Disabled)
+        {
+            <button type="submit" class="btn btn-success btn-block">
+                @ButtonText
+            </button>
+        }
 
-    <BackToList Target="consultations" />
+        <BackToList Target="consultations" />
 </EditForm>
 
 @code {
+    [Parameter] public bool Disabled { get; set; } = false;
     [Parameter] public Consultation consultation { get; set; }
     [Parameter] public string ButtonText { get; set; } = "Save";
     [Parameter] public EventCallback OnValidSubmit { get; set; }
 
     private IList<Customer> Customers;
     private IList<Staff> Staffs;
-   
+
     protected async override Task OnInitializedAsync()
     {
         Staffs = await _client.GetFromJsonAsync<List<Staff>>($"{Endpoints.StaffsEndpoint}");
