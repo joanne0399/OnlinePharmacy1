@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlinePharmacy1.Server.Data;
 
-namespace OnlinePharmacy1.Server.Data.Migrations
+namespace OnlinePharmacy1.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230116151026_AddApplicationTables")]
-    partial class AddApplicationTables
+    [Migration("20230125160829_newdb")]
+    partial class newdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -149,6 +149,22 @@ namespace OnlinePharmacy1.Server.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "ad2bcf0c-20db-474f-8407-5a6b159518ba",
+                            ConcurrencyStamp = "4454e24f-730f-4e48-821b-b55bf6f9b7a0",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = "bd2bcf0c-20db-474f-8407-5a6b159518bb",
+                            ConcurrencyStamp = "6be57888-127d-45d1-bf70-3dc682acad86",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -236,6 +252,13 @@ namespace OnlinePharmacy1.Server.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "3781efa7-66dc-47f0-860f-e506d04102e4",
+                            RoleId = "ad2bcf0c-20db-474f-8407-5a6b159518ba"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -328,6 +351,26 @@ namespace OnlinePharmacy1.Server.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "ca543785-25c5-449a-9d75-8438cc04478b",
+                            Email = "admin@localhost.com",
+                            EmailConfirmed = false,
+                            FirstName = "Admin",
+                            LastName = "User",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@LOCALHOST.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAEF9L0htM2WlM/94N3JkkyL+0LAaOZkAYKYKggYC2hoVaNle0iCgWIHnl4uw3okG70A==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "a72b90c1-0d3c-491f-bb4a-d295931ebbee",
+                            TwoFactorEnabled = false,
+                            UserName = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("OnlinePharmacy1.Shared.Domain.Consultation", b =>
@@ -386,6 +429,28 @@ namespace OnlinePharmacy1.Server.Data.Migrations
                     b.HasKey("CustomerID");
 
                     b.ToTable("Customers");
+
+                    b.HasData(
+                        new
+                        {
+                            CustomerID = 1,
+                            CustomerAddress = "Bedok North Rd Blk 428 #09-387",
+                            CustomerContactNo = "90818473",
+                            CustomerDOB = "15 January 1995",
+                            CustomerEmail = "Jennieninini@gmail.com",
+                            CustomerNRIC = "S9523810J",
+                            CustomerName = "Jennie"
+                        },
+                        new
+                        {
+                            CustomerID = 2,
+                            CustomerAddress = "Sin Ming Ave Blk 76 #14-902",
+                            CustomerContactNo = "98017489",
+                            CustomerDOB = "23 November 1999",
+                            CustomerEmail = "Jayjj@gmail.com",
+                            CustomerNRIC = "S9901807D",
+                            CustomerName = "Jay"
+                        });
                 });
 
             modelBuilder.Entity("OnlinePharmacy1.Shared.Domain.Medication", b =>
@@ -413,6 +478,26 @@ namespace OnlinePharmacy1.Server.Data.Migrations
                     b.HasKey("MedicationID");
 
                     b.ToTable("Medications");
+
+                    b.HasData(
+                        new
+                        {
+                            MedicationID = 1,
+                            Availability = true,
+                            Description = "Treat mild to moderate pain (from headaches, menstrual periods, toothaches, backaches, osteoarthritis, or cold/flu aches and pains) and to reduce fever",
+                            Ingredients = "500 mg of paracetamol",
+                            MedicationName = "Panadol",
+                            RecommendedDosage = "Take 1-2 tablets every 4-6 hours as required"
+                        },
+                        new
+                        {
+                            MedicationID = 2,
+                            Availability = true,
+                            Description = "Relieves coughing, soothes sore throat, loosens phlegm and expels mucus",
+                            Ingredients = "Guaiphenesin, Benzoic Acid",
+                            MedicationName = "Woods Peppermint Adult Cough Syrup",
+                            RecommendedDosage = "Adults and children (12 years and over): 2 teaspoons (10ml), to be taken every 4 hours as prescribed by a healthcare professional"
+                        });
                 });
 
             modelBuilder.Entity("OnlinePharmacy1.Shared.Domain.Order", b =>

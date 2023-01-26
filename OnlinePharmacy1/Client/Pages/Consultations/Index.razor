@@ -6,6 +6,13 @@
 <h3 class="card-title">Consultations</h3>
 <br />
 
+<a href="/consultations/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New Consultation
+</a>
+<br />
+<br />
+
 @if (Consultations == null)
 {
     <div class="alert alert-info">Loading Consultations...</div>
@@ -26,30 +33,30 @@ else
         <tbody>
             @foreach (var consultation in Consultations)
             {
-            <tr>
-                <td>@consultation.Customer.CustomerName</td>
-                <td>@consultation.ConsultationDateTime</td>
-                <td>@consultation.Diagnosis</td>
-                <td>@consultation.Staff.StaffName</td>
-                <td>
-                    <a href="/consultations/view/@consultation.ConsultationID" class="btn btn-primary">
-                        <span class="oi oi-book"></span>
-                    </a>
-                    <a href="/consultations/edit/@consultation.ConsultationID" class="btn btn-warning">
-                        <span class="oi oi-pencil"></span>
-                    </a>
-                    <button class="btn btn-danger" @onclick="@(() => Delete(consultation.ConsultationID))">
-                        <span class="oi oi-delete"></span>
-                    </button>
-                </td>
-            </tr>
+                <tr>
+                    <td>@consultation.Customer.CustomerName</td>
+                    <td>@consultation.ConsultationDateTime</td>
+                    <td>@consultation.Diagnosis</td>
+                    <td>@consultation.Staff.StaffName</td>
+                    <td>
+                        <a href="/consultations/view/@consultation.ConsultationID" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                        <a href="/consultations/edit/@consultation.ConsultationID" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                        <button class="btn btn-danger" @onclick="@(() => Delete(consultation.ConsultationID))">
+                            <span class="oi oi-delete"></span>
+                        </button>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
 }
 
-    @code {
-private List<Consultation> Consultations;
+@code {
+    private List<Consultation> Consultations;
 
     protected async override Task OnInitializedAsync()
     {

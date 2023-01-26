@@ -34,6 +34,7 @@ namespace OnlinePharmacy1.Server.Data
             builder.ApplyConfiguration(new RoleSeedConfiguration());
             builder.ApplyConfiguration(new UserSeedConfiguration());
             builder.ApplyConfiguration(new UserRoleSeedConfiguration());
+            builder.ApplyConfiguration(new StaffSeedConfiguration());
         }
     }
 }

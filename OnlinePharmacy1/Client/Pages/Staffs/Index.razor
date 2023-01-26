@@ -6,6 +6,13 @@
 <h3 class="card-title">Staffs</h3>
 <br />
 
+<a href="/staffs/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New Staff
+</a>
+<br />
+<br />
+
 @if (Staffs == null)
 {
     <div class="alert alert-info">Loading Staffs...</div>
@@ -27,24 +34,24 @@ else
         <tbody>
             @foreach (var staff in Staffs)
             {
-            <tr>
-                <td>@staff.StaffName</td>
-                <td>@staff.StaffContactNo</td>
-                <td>@staff.StaffAddress</td>
-                <td>@staff.StaffNRIC</td>
-                <td>@staff.StaffEmail</td>
-                <td>
-                    <a href="/staffs/view/@staff.StaffID" class="btn btn-primary">
-                        <span class="oi oi-book"></span>
-                    </a>
-                    <a href="/staffs/edit/@staff.StaffID" class="btn btn-warning">
-                        <span class="oi oi-pencil"></span>
-                    </a>
-                    <button class="btn btn-danger" @onclick="@(() => Delete(staff.StaffID))">
-                        <span class="oi oi-delete"></span>
-                    </button>
-                </td>
-            </tr>
+                <tr>
+                    <td>@staff.StaffName</td>
+                    <td>@staff.StaffContactNo</td>
+                    <td>@staff.StaffAddress</td>
+                    <td>@staff.StaffNRIC</td>
+                    <td>@staff.StaffEmail</td>
+                    <td>
+                        <a href="/staffs/view/@staff.StaffID" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                        <a href="/staffs/edit/@staff.StaffID" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                        <button class="btn btn-danger" @onclick="@(() => Delete(staff.StaffID))">
+                            <span class="oi oi-delete"></span>
+                        </button>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

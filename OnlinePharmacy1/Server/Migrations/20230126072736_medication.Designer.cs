@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlinePharmacy1.Server.Data;
 
-namespace OnlinePharmacy1.Server.Data.Migrations
+namespace OnlinePharmacy1.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230116092831_addNameToUser")]
-    partial class addNameToUser
+    [Migration("20230126072736_medication")]
+    partial class medication
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -149,6 +149,22 @@ namespace OnlinePharmacy1.Server.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "ad2bcf0c-20db-474f-8407-5a6b159518ba",
+                            ConcurrencyStamp = "c6b76983-6290-401e-9765-210167ce6290",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = "bd2bcf0c-20db-474f-8407-5a6b159518bb",
+                            ConcurrencyStamp = "974a3d02-3054-4139-bcb9-350f4080b35b",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -236,6 +252,13 @@ namespace OnlinePharmacy1.Server.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "3781efa7-66dc-47f0-860f-e506d04102e4",
+                            RoleId = "ad2bcf0c-20db-474f-8407-5a6b159518ba"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -328,6 +351,250 @@ namespace OnlinePharmacy1.Server.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "9cbed344-8475-461d-9235-9079d74e06ae",
+                            Email = "admin@localhost.com",
+                            EmailConfirmed = false,
+                            FirstName = "Admin",
+                            LastName = "User",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@LOCALHOST.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAEF5gfjAULHP9dx4xe3BH2qREefa9G9bbAakFqSH4l4g908r7kAr+d+BAVGrCJht7Iw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "dc56e83c-7d1c-4304-8569-700f76fc19d2",
+                            TwoFactorEnabled = false,
+                            UserName = "Admin"
+                        });
+                });
+
+            modelBuilder.Entity("OnlinePharmacy1.Shared.Domain.Consultation", b =>
+                {
+                    b.Property<int>("ConsultationID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("ConsultationDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CustomerID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Diagnosis")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StaffID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ConsultationID");
+
+                    b.HasIndex("CustomerID");
+
+                    b.HasIndex("StaffID");
+
+                    b.ToTable("Consultations");
+                });
+
+            modelBuilder.Entity("OnlinePharmacy1.Shared.Domain.Customer", b =>
+                {
+                    b.Property<int>("CustomerID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CustomerAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerContactNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerDOB")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerNRIC")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CustomerID");
+
+                    b.ToTable("Customers");
+
+                    b.HasData(
+                        new
+                        {
+                            CustomerID = 1,
+                            CustomerAddress = "Bedok North Rd Blk 428 #09-387",
+                            CustomerContactNo = "90818473",
+                            CustomerDOB = "15 January 1995",
+                            CustomerEmail = "Jennieninini@gmail.com",
+                            CustomerNRIC = "S9523810J",
+                            CustomerName = "Jennie"
+                        },
+                        new
+                        {
+                            CustomerID = 2,
+                            CustomerAddress = "Sin Ming Ave Blk 76 #14-902",
+                            CustomerContactNo = "98017489",
+                            CustomerDOB = "23 November 1999",
+                            CustomerEmail = "Jayjj@gmail.com",
+                            CustomerNRIC = "S9901807D",
+                            CustomerName = "Jay"
+                        });
+                });
+
+            modelBuilder.Entity("OnlinePharmacy1.Shared.Domain.Medication", b =>
+                {
+                    b.Property<int>("MedicationID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Availability")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Ingredients")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MedicationName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RecommendedDosage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MedicationID");
+
+                    b.ToTable("Medications");
+
+                    b.HasData(
+                        new
+                        {
+                            MedicationID = 1,
+                            Availability = "In stock",
+                            Description = "Treat mild to moderate pain (from headaches, menstrual periods, toothaches, backaches, osteoarthritis, or cold/flu aches and pains) and to reduce fever",
+                            Ingredients = "500 mg of paracetamol",
+                            MedicationName = "Panadol",
+                            RecommendedDosage = "Take 1-2 tablets every 4-6 hours as required"
+                        },
+                        new
+                        {
+                            MedicationID = 2,
+                            Availability = "In stock",
+                            Description = "Relieves coughing, soothes sore throat, loosens phlegm and expels mucus",
+                            Ingredients = "Guaiphenesin, Benzoic Acid",
+                            MedicationName = "Woods Peppermint Adult Cough Syrup",
+                            RecommendedDosage = "Adults and children (12 years and over): 2 teaspoons (10ml), to be taken every 4 hours as prescribed by a healthcare professional"
+                        });
+                });
+
+            modelBuilder.Entity("OnlinePharmacy1.Shared.Domain.Order", b =>
+                {
+                    b.Property<int>("OrderID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CustomerID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("OrderDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("StaffID")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderID");
+
+                    b.HasIndex("CustomerID");
+
+                    b.HasIndex("StaffID");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("OnlinePharmacy1.Shared.Domain.OrderItem", b =>
+                {
+                    b.Property<int>("OrderItemID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("MedicationID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderQty")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderItemID");
+
+                    b.HasIndex("MedicationID");
+
+                    b.HasIndex("OrderID");
+
+                    b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("OnlinePharmacy1.Shared.Domain.Staff", b =>
+                {
+                    b.Property<int>("StaffID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("StaffAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StaffContactNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StaffEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StaffNRIC")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StaffName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("StaffID");
+
+                    b.ToTable("Staffs");
+
+                    b.HasData(
+                        new
+                        {
+                            StaffID = 1,
+                            StaffAddress = "Bedok North Rd Blk 56 #11-902",
+                            StaffContactNo = "89103135",
+                            StaffEmail = "Lalisa@gmail.com",
+                            StaffNRIC = "S9701923J",
+                            StaffName = "Lisa"
+                        },
+                        new
+                        {
+                            StaffID = 2,
+                            StaffAddress = "Toh Guan Rd Blk 236 #02-651",
+                            StaffContactNo = "93018402",
+                            StaffEmail = "Paul@gmail.com",
+                            StaffNRIC = "S86019395D",
+                            StaffName = "Paul"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -379,6 +646,63 @@ namespace OnlinePharmacy1.Server.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("OnlinePharmacy1.Shared.Domain.Consultation", b =>
+                {
+                    b.HasOne("OnlinePharmacy1.Shared.Domain.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlinePharmacy1.Shared.Domain.Staff", "Staff")
+                        .WithMany()
+                        .HasForeignKey("StaffID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Staff");
+                });
+
+            modelBuilder.Entity("OnlinePharmacy1.Shared.Domain.Order", b =>
+                {
+                    b.HasOne("OnlinePharmacy1.Shared.Domain.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlinePharmacy1.Shared.Domain.Staff", "Staff")
+                        .WithMany()
+                        .HasForeignKey("StaffID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Staff");
+                });
+
+            modelBuilder.Entity("OnlinePharmacy1.Shared.Domain.OrderItem", b =>
+                {
+                    b.HasOne("OnlinePharmacy1.Shared.Domain.Medication", "Medication")
+                        .WithMany()
+                        .HasForeignKey("MedicationID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlinePharmacy1.Shared.Domain.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Medication");
+
+                    b.Navigation("Order");
                 });
 #pragma warning restore 612, 618
         }
