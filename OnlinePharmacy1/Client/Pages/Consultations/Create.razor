@@ -1,0 +1,63 @@
+﻿@page "/consultations/create/"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3 class="card-title">Create New Consultation</h3> 
+<hr />
+<br />
+
+<EditForm Model="@consultation" OnValidSubmit="CreateConsultation">
+<DataAnnotationsValidator />
+<ValidationSummary />
+
+    <div class="form-group">
+        <label>Patient: </label><div>
+            <InputDate @bind-Value="consultation.CustomerID" class="form-control">
+                <option value="">-- Select Customer -- </option>
+                @if (Customers != null)
+                {
+                    foreach (var customer in Customers)
+                    {<option value="@customer.CustomerID">@customer.CustomerName</option>
+                }
+            }
+            </InputDate><ValidationMessage For="@(() =>consultation.CustomerID)" />
+        </div>
+    </div>     <div class="form-group"><label>Consultation date/time:</label><div><InputNumber @bind-Value="@consultation.ConsultationDateTime" class="form-control" /><ValidationMessage For="@(() => consultation.ConsultationDateTime)" /></div></div>     <div class="form-group"><label>Diagnosis:</label><div><InputText @bind-Value="@consultation.Diagnosis" class="form-control" /><ValidationMessage For="@(() => consultation.Diagnosis)" /></div></div>     <div class="form-group">
+
+        <label>Consulted by: </label><div>
+            <InputSelect @bind-Value="consultation.StaffID" class="form-control">
+                <option value="">-- Select Staff -- </option>
+                @if (Staffs != null)
+                {
+                    foreach (var staff in Staffs)
+                    {
+                        <option value="@staff.StaffID">@staff.StaffName</option>
+                    }
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() =>consultation.StaffID)" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-block">
+        Create Consultation
+    </button>
+</EditForm>
+
+@code {
+    Consultation consultation = new Consultation();
+    private IList<Staff> Staffs;
+    private IList<Customer> Customers;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Staffs = await _client.GetFromJsonAsync<List<Staff>>($"{Endpoints.StaffsEndpoint}");
+        Customers = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.CustomersEndpoint}");
+    }
+
+    private async Task CreateConsultation()
+    {
+        await _client.PostAsJsonAsync(Endpoints.ConsultationsEndpoint, consultation);
+        _navManager.NavigateTo("/consultations/");
+    }
+}
