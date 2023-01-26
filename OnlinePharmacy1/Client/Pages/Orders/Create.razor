@@ -1,0 +1,79 @@
+﻿@page "/orders/create/"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3 class="card-title">Create New Order</h3>
+
+<hr />
+<br />
+
+<EditForm Model="@order" OnValidSubmit="CreateOrder">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Customer: </label>
+        <div>
+            <InputSelect @bind-Value="order.CustomerID" class="form-control">
+                <option value="">-- Select Customer -- </option>
+                @if (Customers != null)
+                {
+                    foreach (var customer in Customers)
+                    {
+                        <option value="@customer.CustomerID">@customer.CustomerName</option>
+                    }
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() =>order.CustomerID)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Order Date/Time: </label>
+        <div>
+            <InputDate @bind-Value="@order.OrderDateTime" class="form-control" />
+            <ValidationMessage For="@(() => order.OrderDateTime)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Packed by: </label>
+        <div>
+            <InputSelect @bind-Value="order.StaffID" class="form-control">
+                <option value="">-- Select Staff -- </option>
+                @if (Staffs != null)
+                {
+                    foreach (var staff in Staffs)
+                    {
+                        <option value="@staff.StaffID">@staff.StaffName</option>
+                    }
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() =>order.StaffID)" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-block">
+        Create Order
+    </button>
+</EditForm>
+
+
+@code {
+    Order order = new Order();
+
+    private IList<Staff> Staffs;
+    private IList<Customer> Customers;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Staffs = await _client.GetFromJsonAsync<List<Staff>>($"{Endpoints.StaffsEndpoint}");
+        Customers = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.CustomersEndpoint}");
+    }
+
+    private async Task CreateOrder()
+    {
+        await _client.PostAsJsonAsync(Endpoints.OrdersEndpoint,order);
+        _navManager.NavigateTo("/orders/");
+    }
+}

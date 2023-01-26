@@ -20,7 +20,7 @@ namespace OnlinePharmacy1.Server.Configurations.Entities
                     Description = "Treat mild to moderate pain (from headaches, menstrual periods, toothaches, backaches, osteoarthritis, or cold/flu aches and pains) and to reduce fever",
                     Ingredients = "500 mg of paracetamol",
                     RecommendedDosage = "Take 1-2 tablets every 4-6 hours as required",
-                    Availability = true
+                    Availability = "In stock"
                 },
                 new Medication
                 {
@@ -29,7 +29,7 @@ namespace OnlinePharmacy1.Server.Configurations.Entities
                     Description = "Relieves coughing, soothes sore throat, loosens phlegm and expels mucus",
                     Ingredients = "Guaiphenesin, Benzoic Acid",
                     RecommendedDosage = "Adults and children (12 years and over): 2 teaspoons (10ml), to be taken every 4 hours as prescribed by a healthcare professional",
-                    Availability = true
+                    Availability = "In stock"
                 }
             );
         }

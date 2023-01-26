@@ -4,7 +4,15 @@
 @attribute [Authorize]
 
 <h3 class="card-title">Orders</h3>
+<br/>
+
+<a href="/orders/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New Order
+</a>
 <br />
+<br />
+
 
 @if (Orders == null)
 {
@@ -25,23 +33,23 @@ else
         <tbody>
             @foreach (var order in Orders)
             {
-            <tr>
-                <td>@order.OrderID</td>
-                <td>@order.Customer.CustomerName</td>
-                <td>@order.OrderDateTime.Date.ToString("dd MMMM yyyy")</td>
-                <th>@order.Staff.StaffName</th>
-                <td>
-                    <a href="/orderitems/view/@order.OrderID" class="btn btn-primary">
-                        <span class="oi oi-book"></span>
-                    </a>
-                    <a href="/orderitems/edit/@order.OrderID" class="btn btn-warning">
-                        <span class="oi oi-pencil"></span>
-                    </a>
-                    <button class="btn btn-danger" @onclick="@(() => Delete(order.OrderID))">
-                        <span class="oi oi-delete"></span>
-                    </button>
-                </td>
-            </tr>
+                <tr>
+                    <td>@order.OrderID</td>
+                    <td>@order.Customer.CustomerName</td>
+                    <td>@order.OrderDateTime.Date.ToString("dd MMMM yyyy")</td>
+                    <th>@order.Staff.StaffName</th>
+                    <td>
+                        <a href="/orderitems/view/@order.OrderID" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                        <a href="/orderitems/edit/@order.OrderID" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                        <button class="btn btn-danger" @onclick="@(() => Delete(order.OrderID))">
+                            <span class="oi oi-delete"></span>
+                        </button>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

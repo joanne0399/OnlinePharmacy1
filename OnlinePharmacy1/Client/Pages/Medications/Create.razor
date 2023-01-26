@@ -1,0 +1,64 @@
+﻿@page "/medications/create/"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3 class="card-title">Create New Medication</h3>
+
+<hr />
+<br />
+
+<EditForm Model="@medication" OnValidSubmit="CreateMedication">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Medication: </label>
+        <div>
+            <InputText @bind-Value="@medication.MedicationName" class="form-control" />
+            <ValidationMessage For="@(() => medication.MedicationName)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Description: </label>
+        <div>
+            <InputText @bind-Value="@medication.Description" class="form-control" />
+            <ValidationMessage For="@(() => medication.Description)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Ingredients: </label>
+        <div>
+            <InputText @bind-Value="@medication.Ingredients" class="form-control" />
+            <ValidationMessage For="@(() => medication.Ingredients)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Recommended Dosage: </label>
+        <div>
+            <InputText @bind-Value="@medication.RecommendedDosage" class="form-control" />
+            <ValidationMessage For="@(() => medication.RecommendedDosage)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Availability: </label>
+        <div>
+            <InputText @bind-Value="@medication.Availability" class="form-control" />
+            <ValidationMessage For="@(() => medication.Availability)" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-block">
+        Create Medication
+    </button>
+</EditForm>
+
+
+@code {
+    Medication medication = new Medication();
+
+    private async Task CreateMedication()
+    {
+        await _client.PostAsJsonAsync(Endpoints.MedicationsEndpoint, medication);
+        _navManager.NavigateTo("/medications/");
+    }
+}

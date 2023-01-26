@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlinePharmacy1.Server.Data;
 
-namespace OnlinePharmacy1.Server.Data.Migrations
+namespace OnlinePharmacy1.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230116155404_AddedDefaultDataAndUser")]
-    partial class AddedDefaultDataAndUser
+    [Migration("20230125170147_StaffSeedingConfiguration")]
+    partial class StaffSeedingConfiguration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -154,14 +154,14 @@ namespace OnlinePharmacy1.Server.Data.Migrations
                         new
                         {
                             Id = "ad2bcf0c-20db-474f-8407-5a6b159518ba",
-                            ConcurrencyStamp = "b43486eb-e145-4718-ac62-bc380b2c827e",
+                            ConcurrencyStamp = "5f4aaf35-73af-473b-bdbe-45be78aa7571",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "bd2bcf0c-20db-474f-8407-5a6b159518bb",
-                            ConcurrencyStamp = "0221d100-0f3d-41f0-9c39-b18263b8c870",
+                            ConcurrencyStamp = "61727cd3-1adf-4cba-af24-71de5b37d159",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -357,7 +357,7 @@ namespace OnlinePharmacy1.Server.Data.Migrations
                         {
                             Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "52fad078-d5c3-41f8-9f36-e47c3ef83580",
+                            ConcurrencyStamp = "80092014-65f4-421b-ab7e-c0376572ded3",
                             Email = "admin@localhost.com",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -365,9 +365,9 @@ namespace OnlinePharmacy1.Server.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGSuvfBCNqGCS5cdNCC8ccg63uSlBZzEQJBfixT05oOZqD4gh8xFv552iFT6Kto0Jw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIjVg33bdnU8e4Bkt8M/YqlFWB0QfmfoN6GGXk60iUUnnGGTfZqt02OExqbienaHAQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0a0b8ed7-cd4e-47ca-92fa-7ab2b5418561",
+                            SecurityStamp = "03c1c090-ca4b-4044-8b48-e593dd8c3318",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
@@ -575,6 +575,26 @@ namespace OnlinePharmacy1.Server.Data.Migrations
                     b.HasKey("StaffID");
 
                     b.ToTable("Staffs");
+
+                    b.HasData(
+                        new
+                        {
+                            StaffID = 1,
+                            StaffAddress = "Bedok North Rd Blk 56 #11-902",
+                            StaffContactNo = "89103135",
+                            StaffEmail = "Lalisa@gmail.com",
+                            StaffNRIC = "S9701923J",
+                            StaffName = "Lisa"
+                        },
+                        new
+                        {
+                            StaffID = 2,
+                            StaffAddress = "Toh Guan Rd Blk 236 #02-651",
+                            StaffContactNo = "93018402",
+                            StaffEmail = "Paul@gmail.com",
+                            StaffNRIC = "S86019395D",
+                            StaffName = "Paul"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

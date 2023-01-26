@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlinePharmacy1.Server.Data;
 
-namespace OnlinePharmacy1.Server.Data.Migrations
+namespace OnlinePharmacy1.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -152,14 +152,14 @@ namespace OnlinePharmacy1.Server.Data.Migrations
                         new
                         {
                             Id = "ad2bcf0c-20db-474f-8407-5a6b159518ba",
-                            ConcurrencyStamp = "b43486eb-e145-4718-ac62-bc380b2c827e",
+                            ConcurrencyStamp = "c6b76983-6290-401e-9765-210167ce6290",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "bd2bcf0c-20db-474f-8407-5a6b159518bb",
-                            ConcurrencyStamp = "0221d100-0f3d-41f0-9c39-b18263b8c870",
+                            ConcurrencyStamp = "974a3d02-3054-4139-bcb9-350f4080b35b",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -355,7 +355,7 @@ namespace OnlinePharmacy1.Server.Data.Migrations
                         {
                             Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "52fad078-d5c3-41f8-9f36-e47c3ef83580",
+                            ConcurrencyStamp = "9cbed344-8475-461d-9235-9079d74e06ae",
                             Email = "admin@localhost.com",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -363,9 +363,9 @@ namespace OnlinePharmacy1.Server.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGSuvfBCNqGCS5cdNCC8ccg63uSlBZzEQJBfixT05oOZqD4gh8xFv552iFT6Kto0Jw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEF5gfjAULHP9dx4xe3BH2qREefa9G9bbAakFqSH4l4g908r7kAr+d+BAVGrCJht7Iw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0a0b8ed7-cd4e-47ca-92fa-7ab2b5418561",
+                            SecurityStamp = "dc56e83c-7d1c-4304-8569-700f76fc19d2",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
@@ -458,8 +458,8 @@ namespace OnlinePharmacy1.Server.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Availability")
-                        .HasColumnType("bit");
+                    b.Property<string>("Availability")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -481,7 +481,7 @@ namespace OnlinePharmacy1.Server.Data.Migrations
                         new
                         {
                             MedicationID = 1,
-                            Availability = true,
+                            Availability = "In stock",
                             Description = "Treat mild to moderate pain (from headaches, menstrual periods, toothaches, backaches, osteoarthritis, or cold/flu aches and pains) and to reduce fever",
                             Ingredients = "500 mg of paracetamol",
                             MedicationName = "Panadol",
@@ -490,7 +490,7 @@ namespace OnlinePharmacy1.Server.Data.Migrations
                         new
                         {
                             MedicationID = 2,
-                            Availability = true,
+                            Availability = "In stock",
                             Description = "Relieves coughing, soothes sore throat, loosens phlegm and expels mucus",
                             Ingredients = "Guaiphenesin, Benzoic Acid",
                             MedicationName = "Woods Peppermint Adult Cough Syrup",
@@ -573,6 +573,26 @@ namespace OnlinePharmacy1.Server.Data.Migrations
                     b.HasKey("StaffID");
 
                     b.ToTable("Staffs");
+
+                    b.HasData(
+                        new
+                        {
+                            StaffID = 1,
+                            StaffAddress = "Bedok North Rd Blk 56 #11-902",
+                            StaffContactNo = "89103135",
+                            StaffEmail = "Lalisa@gmail.com",
+                            StaffNRIC = "S9701923J",
+                            StaffName = "Lisa"
+                        },
+                        new
+                        {
+                            StaffID = 2,
+                            StaffAddress = "Toh Guan Rd Blk 236 #02-651",
+                            StaffContactNo = "93018402",
+                            StaffEmail = "Paul@gmail.com",
+                            StaffNRIC = "S86019395D",
+                            StaffName = "Paul"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
