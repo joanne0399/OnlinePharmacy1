@@ -1,0 +1,58 @@
+﻿<EditForm Model="@customer" OnValidSubmit="@OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Name: </label>
+        <div>
+            <InputText @bind-Value="@customer.CustomerName" class="form-control" />
+            <ValidationMessage For="@(() => customer.CustomerName)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>NRIC: </label>
+        <div>
+            <InputText @bind-Value="@customer.CustomerNRIC" class="form-control" />
+            <ValidationMessage For="@(() => customer.CustomerNRIC)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Email: </label>
+        <div>
+            <InputText @bind-Value="@customer.CustomerEmail" class="form-control" />
+            <ValidationMessage For="@(() => customer.CustomerEmail)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Address: </label>
+        <div>
+            <InputText @bind-Value="@customer.CustomerAddress" class="form-control" />
+            <ValidationMessage For="@(() => customer.CustomerAddress)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Contact Number: </label>
+        <div>
+            <InputText @bind-Value="@customer.CustomerContactNo" class="form-control" />
+            <ValidationMessage For="@(() => customer.CustomerContactNo)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Date of Birth: </label>
+        <div>
+            <InputText @bind-Value="@customer.CustomerDOB" class="form-control" />
+            <ValidationMessage For="@(() => customer.CustomerDOB)" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-block">
+        @ButtonText
+    </button>
+
+</EditForm>
+
+@code {
+    [Parameter] public Customer customer { get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnValidSubmit{ get; set; }
+}

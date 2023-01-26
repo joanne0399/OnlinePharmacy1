@@ -7,51 +7,8 @@
 <hr />
 <br />
 
-<EditForm Model="@staff" OnValidSubmit="CreateStaff">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <div class="form-group">
-        <label>Name: </label>
-        <div>
-            <InputText @bind-Value="@staff.StaffName" class="form-control" />
-            <ValidationMessage For="@(() => staff.StaffName)" />
-        </div>
-    </div>
-    <div class="form-group">
-        <label>Contact Number: </label>
-        <div>
-            <InputText @bind-Value="@staff.StaffContactNo" class="form-control" />
-            <ValidationMessage For="@(() => staff.StaffContactNo)" />
-        </div>
-    </div>
-    <div class="form-group">
-        <label>Address: </label>
-        <div>
-            <InputText @bind-Value="@staff.StaffAddress" class="form-control" />
-            <ValidationMessage For="@(() => staff.StaffAddress)" />
-        </div>
-    </div>
-    <div class="form-group">
-        <label>NRIC: </label>
-        <div>
-            <InputText @bind-Value="@staff.StaffNRIC" class="form-control" />
-            <ValidationMessage For="@(() => staff.StaffNRIC)" />
-        </div>
-    </div>
-    <div class="form-group">
-        <label>Email: </label>
-        <div>
-            <InputText @bind-Value="@staff.StaffEmail" class="form-control" />
-            <ValidationMessage For="@(() => staff.StaffEmail)" />
-        </div>
-    </div>
-
-    <button type="submit" class="btn btn-success btn-block">
-        Create Staff
-    </button>
-</EditForm>
-
+<FormComponent ButtonText="Create Staff" customer="customer" OnValidSubmit="@CreateStaff" />
+   
 
 @code {
     Staff staff = new Staff();

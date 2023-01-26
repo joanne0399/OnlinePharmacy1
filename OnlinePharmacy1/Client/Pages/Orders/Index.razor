@@ -39,10 +39,10 @@ else
                     <td>@order.OrderDateTime.Date.ToString("dd MMMM yyyy")</td>
                     <th>@order.Staff.StaffName</th>
                     <td>
-                        <a href="/orderitems/view/@order.OrderID" class="btn btn-primary">
+                        <a href="/orders/view/@order.OrderID" class="btn btn-primary">
                             <span class="oi oi-book"></span>
                         </a>
-                        <a href="/orderitems/edit/@order.OrderID" class="btn btn-warning">
+                        <a href="/orders/edit/@order.OrderID" class="btn btn-warning">
                             <span class="oi oi-pencil"></span>
                         </a>
                         <button class="btn btn-danger" @onclick="@(() => Delete(order.OrderID))">
