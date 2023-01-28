@@ -34,6 +34,9 @@ namespace OnlinePharmacy1.Server.Controllers
         //public async Task<ActionResult<IEnumerable<Make>>> GetStaffs()
         public async Task<IActionResult> GetStaff()
         {
+            //to be deleted or comment after testing the global error handling 
+            //return NotFound();
+
             //Refactored
             //return await _context.Makes.ToListAsync();
             var staffs = await _unitOfWork.Staffs.GetAll();

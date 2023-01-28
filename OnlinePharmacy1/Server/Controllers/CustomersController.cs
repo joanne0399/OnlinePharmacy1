@@ -34,6 +34,9 @@ namespace OnlinePharmacy1.Server.Controllers
         //public async Task<ActionResult<IEnumerable<Make>>> GetCustomers()
         public async Task<IActionResult> GetCustomer()
         {
+            //to be deleted or comment after testing the global error handling 
+            //return NotFound();
+
             //Refactored
             //return await _context.Makes.ToListAsync();
             var customers = await _unitOfWork.Customers.GetAll();
