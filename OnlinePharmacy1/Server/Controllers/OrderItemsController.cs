@@ -34,6 +34,9 @@ namespace OnlinePharmacy1.Server.Controllers
         //public async Task<ActionResult<IEnumerable<Make>>> GetOrderItems()
         public async Task<IActionResult> GetOrderItem()
         {
+            //to be deleted or comment after testing the global error handling 
+            //return NotFound();
+
             //Refactored
             //return await _context.Makes.ToListAsync();
             var orderitems = await _unitOfWork.OrderItems.GetAll(includes: q => q.Include(x => x.Order).Include(x => x.Medication));
