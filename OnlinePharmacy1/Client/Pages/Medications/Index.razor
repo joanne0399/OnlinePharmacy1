@@ -78,7 +78,7 @@ else
     async Task Delete(int medicationId)
     {
         var medication = Medications.First(q => q.MedicationID == medicationId);
-        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {medication.MedicationID}?");
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {medication.MedicationName}?");
         if (confirm)
         {
             await _client.DeleteAsync($"{Endpoints.MedicationsEndpoint}/{medicationId}");
