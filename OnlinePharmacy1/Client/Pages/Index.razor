@@ -4,7 +4,22 @@
 <head>
     <center><h1><b>YET's Online Pharmacy</b></h1></center>
 </head>
+
+<center>
+    <h7>
+        Welcome to YET's Online Pharmacy we sell OTC Medicine and also prescriptions.
+        For prescriptions please submit an external valid prescription from a certified doctor.
+        If you have any enquiries, please enquire with any staff.
+    </h7>
+</center>
+
+<hr class="solid">
 <style>
+    /* Solid border */
+    hr.solid {
+        border-top: 3px solid #bbb;
+    }
+
     .card {
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
         max-width: 300px;
@@ -165,8 +180,72 @@
       margin: 0 auto;
    }
 }
+
+/* Style inputs, select elements and textareas */
+input[type=text], select, textarea{
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+/* Style the label to display next to the inputs */
+label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
+}
+
+/* Style the submit button */
+input[type=submit] {
+  background-color: #04AA6D;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+
+/* Style the container */
+.container {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+/* Floating column for labels: 25% width */
+.col-25 {
+  float: left;
+  width: 25%;
+  margin-top: 6px;
+}
+
+/* Floating column for inputs: 75% width */
+.col-75 {
+  float: left;
+  width: 75%;
+  margin-top: 6px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@@media screen and (max-width: 600px) {
+  .col-25, .col-75, input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+  }
+}
 </style>
 <body>
+    <h3><b>Hot Deals!</b></h3>
     <div id="slider">
         <input type="radio" name="slider" id="slide1" checked>
         <input type="radio" name="slider" id="slide2">
@@ -214,6 +293,10 @@
             <label for="slide3"></label>
             <label for="slide4"></label>
         </div>
+
+        <hr class="solid">
+        <br /><br />
+        <h4><b>Quick Add</b></h4>
         <div class="card">
             <img src="https://www.prettyhealthy.sg/wp-content/uploads/2021/01/8888008120362_1.jpg" alt="Panadol" style="width:100%">
             <h6>Panadol</h6>
@@ -221,8 +304,52 @@
             <p class="price">$7.50</p>
             <p>Paracetamol is a medication used to treat fever.</p>
             <p><button>Add to Cart</button></p>
-
         </div>
+
+        <hr class="solid">
+        <br /><br />
+        <h4><b>General Inquiry</b></h4>
+        <h7>If you have any feedback or inquiries regarding our products or services, please contact us through the form below. We are glad to answer any queries you have in mind or to receive any feedback. Our Customer Service team will respond within 3 working day.</h7>
+        <div class="container">
+            <form action="action_page.php">
+                <div class="row">
+                    <div class="col-25">
+                        <label for="name">Name</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" id="name" name="name" placeholder="Your name..">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" id="email" name="email" placeholder="Your email..">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="phone">Contact Number</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" id="phone" name="phone" placeholder="Your contact..">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="feedback">Feedback</label>
+                    </div>
+                    <div class="col-75">
+                        <textarea id="feedback" name="feedback" placeholder="Write something.." style="height:200px"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+
     </div>
     </body>
 </html>
