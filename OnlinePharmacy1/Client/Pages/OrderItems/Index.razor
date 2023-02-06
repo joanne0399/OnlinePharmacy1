@@ -76,7 +76,7 @@ else
     async Task Delete(int orderitemId)
     {
         var orderitem = Orderitems.First(q => q.OrderItemID == orderitemId);
-        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {orderitem.OrderItemID}?");
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete order item details?");
         if (confirm)
         {
             await _client.DeleteAsync($"{Endpoints.OrderItemEndpoint}/{orderitemId}");
